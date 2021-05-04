@@ -41,7 +41,7 @@ jobs:
         run: docker build . --file Dockerfile --tag test 
       
       - name: Push docjer images
-        run: docker push aguilarfrank/DevSecOps  
+        run: docker push aguilarfrank/devsecops  
     
 
 
