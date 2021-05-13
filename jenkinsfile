@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                git branch: 'master', url: 'https://github.com/aguilar-frank/test.git'
+                
+                echo 'Installing dependencies..'
+                sh 'pip3 install -r requirements.txt '
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                dir('test'){
+                    
+                }
+            }
+        }
+        stage('Packet'){
+            steps{
+                echo 'Dockerizing...'
+                sh 'docker build . --file Dockerfile --tag test'
+                //sh 'docker push aguilarfrank/devsecops'  
+            }
+        }        
+        stage('Test image'){
+            steps{
+                echo 'Analazing with trivy...'
+                sh 'trivy image --ignore-unfixed --severity HIGH,CRITICAL  test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
